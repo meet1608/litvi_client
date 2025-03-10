@@ -1,0 +1,174 @@
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
+
+    --card: 240 10% 3.9%;
+    --card-foreground: 0 0% 98%;
+
+    --popover: 240 10% 3.9%;
+    --popover-foreground: 0 0% 98%;
+
+    --primary: 262 83% 64%;
+    --primary-foreground: 0 0% 98%;
+
+    --secondary: 240 3.7% 15.9%;
+    --secondary-foreground: 0 0% 98%;
+
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%;
+
+    --accent: 240 3.7% 15.9%;
+    --accent-foreground: 0 0% 98%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
+    --ring: 262 83% 64%;
+
+    --radius: 0.5rem;
+
+    --sidebar-background: 240 10% 3.9%;
+    --sidebar-foreground: 0 0% 98%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-litvi-dark text-foreground scroll-smooth;
+    font-family: 'Inter', sans-serif;
+  }
+
+  /* Custom classes for text gradients */
+  .text-gradient-modern {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-litvi-purple via-litvi-magenta to-litvi-blue;
+  }
+  
+  .section-container {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24;
+  }
+
+  .section-title {
+    @apply text-4xl md:text-5xl lg:text-6xl font-bold mb-8 md:mb-12;
+  }
+
+  .section-subtitle {
+    @apply text-xl md:text-2xl text-white/70 mb-8 max-w-3xl mx-auto;
+  }
+}
+
+.reveal-container {
+  overflow: hidden;
+}
+
+.product-card {
+  @apply relative overflow-hidden rounded-xl bg-litvi-darkCharcoal border border-white/5 shadow-md transition-all duration-300;
+}
+
+.product-card:hover {
+  @apply shadow-lg translate-y-[-5px] border-litvi-purple/40;
+}
+
+.timeline-item::before {
+  content: '';
+  @apply absolute top-0 left-[7px] md:left-1/2 md:ml-[-1px] h-full w-[2px] bg-litvi-purple opacity-30;
+}
+
+.timeline-dot {
+  @apply absolute top-1 left-0 md:left-1/2 md:ml-[-8px] w-4 h-4 rounded-full bg-litvi-purple;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Glass effect */
+.glass-effect {
+  @apply bg-white/5 backdrop-blur-sm border border-white/10;
+}
+
+/* Dark theme glass effects */
+.neo-blur {
+  @apply backdrop-blur-2xl bg-black/40 border border-white/10;
+}
+
+.text-gradient {
+  @apply bg-gradient-to-br from-white via-white/90 to-white/70 bg-clip-text text-transparent;
+}
+
+.card-gradient {
+  @apply bg-gradient-to-br from-litvi-darkCharcoal to-litvi-dark border border-white/5;
+}
+
+.hero-gradient {
+  @apply bg-gradient-to-br from-litvi-dark via-litvi-darkCharcoal to-litvi-darkGray;
+}
+
+/* Metal-inspired gradients for kitchen sinks */
+.steel-gradient {
+  @apply bg-gradient-to-br from-litvi-steel to-litvi-chrome border border-white/10;
+}
+
+.matte-gradient {
+  @apply bg-gradient-to-br from-litvi-matte to-litvi-darkCharcoal border border-white/10;
+}
+
+.copper-gradient {
+  @apply bg-gradient-to-br from-litvi-copper to-litvi-brass/80 border border-white/10;
+}
+
+/* Water-inspired effects */
+.water-reflection {
+  @apply relative overflow-hidden;
+}
+
+.water-reflection::after {
+  content: '';
+  @apply absolute inset-0 bg-gradient-to-t from-litvi-oceanBlue/20 to-transparent opacity-0 transition-opacity duration-500;
+}
+
+.water-reflection:hover::after {
+  @apply opacity-50;
+}
+
+/* Kitchen-themed card styles */
+.sink-card {
+  @apply relative overflow-hidden rounded-xl border border-white/10 shadow-lg transition-all duration-300;
+  background: linear-gradient(to bottom, rgba(24, 24, 27, 0.8), rgba(15, 15, 17, 0.9));
+}
+
+.sink-card:hover {
+  @apply border-litvi-steel/40 translate-y-[-5px];
+  box-shadow: 0 15px 30px -10px rgba(0, 0, 0, 0.3);
+}
+
+/* Dark theme specific styles */
+.dark-card {
+  @apply bg-litvi-darkCharcoal border border-white/5 text-white rounded-xl p-6;
+}
+
+.dark-input {
+  @apply bg-litvi-dark border border-white/10 text-white rounded-lg px-4 py-2 focus:border-litvi-purple focus:ring-1 focus:ring-litvi-purple;
+}
