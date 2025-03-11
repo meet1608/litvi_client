@@ -11,11 +11,12 @@ const app = express();
 
 // ✅ Configure CORS to allow frontend requests
 const corsOptions = {
-  origin: "http://localhost:3000", // Allow requests from frontend
-  methods: "GET,POST,PUT,DELETE", // Allowed methods
-  credentials: true, // Allow cookies if needed
+  origin: "*", // Allows requests from any origin
+  methods: "GET,POST,PUT,DELETE",
+  credentials: true,
 };
 app.use(cors(corsOptions));
+
 app.use(cors());
 
 app.use(bodyParser.json());
