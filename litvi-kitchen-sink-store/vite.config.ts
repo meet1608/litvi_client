@@ -8,13 +8,13 @@ export default defineConfig(({ mode }) => ({
   server: {
     host: "::",
     port: 3002,
-    // proxy: {
-    //   '/api': {
-    //     target: 'https://your-vercel-app.vercel.app', // Replace with your Vercel URL
-    //     changeOrigin: true,
-    //     secure: true,
-    //   },
-    // },
+    proxy: {
+      '/api': {
+        target: 'https://litvi.vercel.app', // Replace with your Vercel URL
+        changeOrigin: true,
+        secure: true,
+      },
+    },
     headers: {
       "Cross-Origin-Opener-Policy": "unsafe-none"
     },
