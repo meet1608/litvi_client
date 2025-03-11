@@ -57,7 +57,7 @@ const ProductDetail = () => {
       setIsLoading(true);
       setError(null);
       try {
-        const response = await fetch(`http://localhost:5002/api/admin/products/${id}`);
+        const response = await fetch(`https://litvi-admin.onrender.com/api/admin/products/${id}`);
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }

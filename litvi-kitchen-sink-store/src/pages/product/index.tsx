@@ -39,7 +39,7 @@ const ProductsPage = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch('http://localhost:5002/api/admin/products');
+        const response = await fetch('https://litvi-admin.onrender.com/api/admin/products');
         const data = await response.json();
         setProducts(data);
       } catch (error) {
