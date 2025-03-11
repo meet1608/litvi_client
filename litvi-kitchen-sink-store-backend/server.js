@@ -4,6 +4,7 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 const authRoutes = require("./routes/auth");
 const passwordResetRoutes = require("./routes/passwordResetRoutes");
+const Shipping = require("./routes/shipping");
 const mongoose = require("mongoose");
 dotenv.config();
 
@@ -36,6 +37,7 @@ app.get("/", (req, res) => {
 
 app.use("/auth", authRoutes);
 app.use("/auth", passwordResetRoutes);
+app.use("/api/shipping", Shipping);
 
 app.use((err, req, res, next) => {
   if (err.name === "MongoServerError" && err.code === 11000) {

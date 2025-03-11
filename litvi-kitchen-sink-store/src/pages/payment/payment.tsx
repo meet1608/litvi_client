@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
+import axios from 'axios';
 import {
     CreditCard,
     ShieldCheck,
@@ -23,7 +24,10 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 
 const shimmer = "before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-white/10 before:to-transparent";
-const user = localStorage.getItem
+const user = JSON.parse(localStorage.getItem('user'));
+const userId = user?.userId;
+const email = user?.email;
+
 interface ShippingDetails {
     fullName: string;
     email: string;
@@ -33,6 +37,7 @@ interface ShippingDetails {
     city: string;
     state: string;
     zipCode: string;
+    userId: string;
 }
 
 const Payment = () => {
@@ -42,14 +47,16 @@ const Payment = () => {
     const [paymentMethod, setPaymentMethod] = useState<'card' | 'cod'>('card');
     const [shippingDetails, setShippingDetails] = useState<ShippingDetails>({
         fullName: '',
-        email: '',
+        email: email || '',
         phone: '',
         address: '',
         landMark: '',
         city: '',
         state: '',
         zipCode: '',
+        userId: userId || '' // Added userId
     });
+
 
     // Calculate order summary values
     const subtotal = getCartTotal();
@@ -74,7 +81,14 @@ const Payment = () => {
             setShippingDetails(JSON.parse(savedDetails));
         }
     }, []);
-    
+
+    useEffect(() => {
+        if (!shippingDetails.email) {
+            setShippingDetails(prev => ({ ...prev, email }));
+        }
+    }, []);
+
+
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setShippingDetails(prev => {
@@ -83,7 +97,8 @@ const Payment = () => {
             return updatedDetails;
         });
     };
-    
+
+
 
     const validateForm = (): boolean => {
         const { fullName, email, phone, address, landMark, city, state, zipCode } = shippingDetails;
@@ -117,8 +132,22 @@ const Payment = () => {
         try {
             setLoading(true);
 
+            // Save Shipping Details
+            const dataToSend = { ...shippingDetails };
+
+            const response = await axios.post('https://litvi-client.onrender.com/api/shipping/save-shipping', dataToSend);
+    
+            if (response.status !== 201) {
+                toast.error("Error", {
+                    description: response.data?.message || "Failed to save shipping details."
+                });
+                setLoading(false);
+                return;
+            }
+
+
+            // Proceed with payment
             if (paymentMethod === 'card') {
-                // Initialize Razorpay
                 const razorpay = await loadRazorpay();
 
                 if (!razorpay) {
@@ -127,29 +156,26 @@ const Payment = () => {
                     return;
                 }
 
-                // Create order on your server (simulated here)
                 const orderData = {
-                    amount: Math.round(total * 100), // Razorpay expects amount in paise
+                    amount: Math.round(total * 100),
                     currency: 'INR',
                     receipt: `receipt_${Date.now()}`,
                     payment_capture: 1
                 };
 
-                // Simulating order creation response
                 const order = {
                     id: `order_${Date.now()}`,
                     amount: orderData.amount
                 };
 
-                // Initialize Razorpay checkout
                 const options = {
-                    key: 'rzp_test_YOUR_KEY_ID', // Replace with your actual Razorpay key
+                    key: 'rzp_test_YOUR_KEY_ID',
                     amount: order.amount,
                     currency: 'INR',
                     name: 'LITVI Quartz',
                     description: 'Purchase of Quartz Sinks',
                     order_id: order.id,
-                    handler: function (response: any) {
+                    handler: function (response) {
                         handlePaymentSuccess(response);
                     },
                     prefill: {
@@ -169,7 +195,6 @@ const Payment = () => {
                 const paymentObject = new razorpay(options);
                 paymentObject.open();
             } else {
-                // Handle COD - Simulate success after 2 seconds
                 setTimeout(() => {
                     handlePaymentSuccess({
                         razorpay_payment_id: `cod_${Date.now()}`,
@@ -184,6 +209,7 @@ const Payment = () => {
             setLoading(false);
         }
     };
+
 
     const handlePaymentSuccess = (response: any) => {
         // Simulate order processing
@@ -257,11 +283,11 @@ const Payment = () => {
                                             id="email"
                                             name="email"
                                             type="email"
-                                            value={shippingDetails.email}
-                                            onChange={handleInputChange}
-                                            placeholder="johndoe@example.com"
-                                            className="bg-white/5 border-white/10 text-white"
+                                            value={email}  // Email from localStorage
+                                            readOnly
+                                            className="bg-white/5 border-white/10 text-white cursor-not-allowed"
                                         />
+
                                     </div>
 
                                     <div className="space-y-2">
@@ -360,8 +386,8 @@ const Payment = () => {
                                 <div className="space-y-4">
                                     <div
                                         className={`p-4 rounded-lg border cursor-pointer transition-all ${paymentMethod === 'card'
-                                                ? 'border-litvi-purple bg-litvi-purple/10'
-                                                : 'border-white/10 bg-white/5 hover:bg-white/10'
+                                            ? 'border-litvi-purple bg-litvi-purple/10'
+                                            : 'border-white/10 bg-white/5 hover:bg-white/10'
                                             }`}
                                         onClick={() => setPaymentMethod('card')}
                                     >
@@ -390,8 +416,8 @@ const Payment = () => {
 
                                     <div
                                         className={`p-4 rounded-lg border cursor-pointer transition-all ${paymentMethod === 'cod'
-                                                ? 'border-litvi-purple bg-litvi-purple/10'
-                                                : 'border-white/10 bg-white/5 hover:bg-white/10'
+                                            ? 'border-litvi-purple bg-litvi-purple/10'
+                                            : 'border-white/10 bg-white/5 hover:bg-white/10'
                                             }`}
                                         onClick={() => setPaymentMethod('cod')}
                                     >

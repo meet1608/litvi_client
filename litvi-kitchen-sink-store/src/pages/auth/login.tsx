@@ -35,9 +35,9 @@ const Login = () => {
       if (!response.ok) {
         throw new Error(data.message || "Login failed");
       }
-      localStorage.setItem("user", JSON.stringify(data.user));  // Storing user details
-      localStorage.setItem("token", data.token);  // Store JWT token
-
+      const { token, user } = data; // Assuming API returns token & user details
+      localStorage.setItem('token', token);
+      localStorage.setItem('user', JSON.stringify(user));
       toast({ title: "Success", description: "You have successfully logged in!" });
       navigate('/');
     } catch (error) {

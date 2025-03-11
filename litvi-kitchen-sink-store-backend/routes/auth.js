@@ -3,6 +3,8 @@ const bcrypt = require("bcryptjs");
 const User = require("../models/Peoples");
 const nodemailer = require("nodemailer");
 const otpGenerator = require("otp-generator");
+const jwt = require("jsonwebtoken");
+
 require('dotenv').config();
 const router = express.Router();
 
@@ -188,7 +190,21 @@ router.post("/login", async (req, res) => {
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) return res.status(400).json({ message: "Invalid credentials" });
 
-    res.json({ userId: user._id, username: user.username, email: user.email });
+    // Generate JWT token
+    const token = jwt.sign(
+      { userId: user._id, email: user.email },
+      process.env.JWT_SECRET,
+      { expiresIn: "1h" }
+    );
+
+    res.json({
+      token,
+      user: {
+        userId: user._id,
+        username: user.username,
+        email: user.email
+      }
+    });
   } catch (error) {
     res.status(500).json({ message: "Server error" });
   }
