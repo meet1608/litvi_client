@@ -48,10 +48,12 @@ router.post("/register", async (req, res) => {
 
     // Generate OTP
     const otp = otpGenerator.generate(6, {
-      upperCase: false,
+      upperCaseAlphabets: true,
       specialChars: false,
-      alphabets: false,
-    });
+      digits: true,
+      lowerCaseAlphabets: false
+  });
+  
 
     // Create new user
     const newUser = new User({
