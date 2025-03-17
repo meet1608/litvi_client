@@ -16,6 +16,7 @@ import Cart from "./pages/cart/index";
 import Products from "./pages/product/index"
 import ContactUs from "./pages/contactUs";
 import Payment from "./pages/payment/payment";
+import Profile from "./pages/profile/index";
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -38,6 +39,8 @@ const App = () => (
           <Route path="/products" element={<Products />} />
           <Route path="/contactus" element={<ContactUs />} />
           <Route path="/payment" element={<Payment />} />
+          <Route path="/auth/profile" element={<Profile />} />
+
 
 
                   {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

@@ -135,7 +135,7 @@ const Payment = () => {
             // Save Shipping Details
             const dataToSend = { ...shippingDetails };
 
-            const response = await axios.post('http://localhost:5000/api/shipping/save-shipping', dataToSend);
+            const response = await axios.post('https://litvi-client.onrender.com/api/shipping/save-shipping', dataToSend);
     
             if (response.status !== 201) {
                 toast.error("Error", {

@@ -46,7 +46,7 @@ const ResetPassword = () => {
     setError(null);
     setIsLoading(true);
     try {
-      const response = await fetch(`http://localhost:5000/auth/reset-password/${token}`, {
+      const response = await fetch(`https://litvi-client.onrender.com/auth/reset-password/${token}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ newPassword: password, confirmPassword }),

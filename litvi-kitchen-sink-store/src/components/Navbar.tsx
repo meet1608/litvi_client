@@ -3,9 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, Phone, ChevronDown, ShoppingCart } from 'lucide-react';
 import { useCart } from '@/context/cartContext'; // Make sure the path is correct
+import { FaUserCircle } from 'react-icons/fa';
 
 const navigation = [
- 
+
 ];
 
 const Navbar = () => {
@@ -15,6 +16,7 @@ const Navbar = () => {
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
 
   const navigate = useNavigate();
+  const user = JSON.parse(localStorage.getItem('user') || 'null');
 
   useEffect(() => {
     const handleScroll = () => {
@@ -109,22 +111,22 @@ const Navbar = () => {
 
           {/* Contact Info */}
           <div className="hidden md:flex items-center space-x-4">
-          <motion.button
-            onClick={() => navigate("/cart")}
-            className="flex items-center gap-2 px-3 py-2 bg-litvi-purple/80 text-white rounded-full shadow-lg hover:bg-litvi-purple transition-all duration-300 relative"
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3, delay: 0.4 }}
-            whileHover={{ scale: 1.05 }}
-          >
-            <ShoppingCart className="h-5 w-5" /> {/* Shopping Cart Icon */}
-            {getCartCount() > 0 && (
-              <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full px-2 py-0">
-                {getCartCount()}
-              </span>
-            )}
-          </motion.button>
-            
+            <motion.button
+              onClick={() => navigate("/cart")}
+              className="flex items-center gap-2 px-3 py-2 bg-litvi-purple/80 text-white rounded-full shadow-lg hover:bg-litvi-purple transition-all duration-300 relative"
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3, delay: 0.4 }}
+              whileHover={{ scale: 1.05 }}
+            >
+              <ShoppingCart className="h-5 w-5" /> {/* Shopping Cart Icon */}
+              {getCartCount() > 0 && (
+                <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full px-2 py-0">
+                  {getCartCount()}
+                </span>
+              )}
+            </motion.button>
+
             <motion.button
               onClick={() => navigate("/products")}
               className="flex items-center gap-3 px-4 py-2 bg-litvi-purple/80 text-white rounded-full shadow-lg hover:bg-litvi-purple transition-all duration-300"
@@ -145,16 +147,25 @@ const Navbar = () => {
             >
               <span className="text-sm font-semibold">Contact Us</span>
             </motion.button>
-            <motion.button
-              onClick={() => navigate("/auth/login")}
-              className="flex items-center gap-3 px-4 py-2 bg-litvi-purple/80 text-white rounded-full shadow-lg hover:bg-litvi-purple transition-all duration-300"
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3, delay: 0.5 }}
-              whileHover={{ scale: 1.05 }}
-            >
-              <span className="text-sm font-semibold">Login</span>
-            </motion.button>
+            {user ? (
+              <div className='w-24 h-24 ml-2'>
+              <FaUserCircle
+                className="text-white text-3xl cursor-pointer hover:text-litvi-purple transition-all duration-300"
+                onClick={() => navigate('/auth/profile')}
+              />
+              </div>
+            ) : (
+              <motion.button
+                onClick={() => navigate("/auth/login")}
+                className="flex items-center gap-3 px-4 py-2 bg-litvi-purple/80 text-white rounded-full shadow-lg hover:bg-litvi-purple transition-all duration-300"
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3, delay: 0.5 }}
+                whileHover={{ scale: 1.05 }}
+              >
+                <span className="text-sm font-semibold">Login</span>
+              </motion.button>
+            )}
           </div>
 
           {/* Mobile menu button */}
@@ -235,26 +246,26 @@ const Navbar = () => {
 
               {/* Cart and Login buttons for mobile */}
               <div className="pt-4 space-y-2">
-              <motion.button
-      onClick={() => {
-        navigate("/cart");
-        if (setIsOpen) {
-          setIsOpen(false);
-        }
-      }}
-      className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-litvi-purple/80 text-white rounded-md shadow-lg hover:bg-litvi-purple transition-all duration-300 relative"
-      initial={{ opacity: 0, y: -20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.3, delay: 0.4 }}
-      whileHover={{ scale: 1.05 }}
-    >
-      <ShoppingCart className="h-5 w-5" /> {/* ShoppingCart Icon */}
-      {getCartCount() > 0 && (
-        <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full px-2 py-0">
-          {getCartCount()}
-        </span>
-      )}
-    </motion.button>
+                <motion.button
+                  onClick={() => {
+                    navigate("/cart");
+                    if (setIsOpen) {
+                      setIsOpen(false);
+                    }
+                  }}
+                  className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-litvi-purple/80 text-white rounded-md shadow-lg hover:bg-litvi-purple transition-all duration-300 relative"
+                  initial={{ opacity: 0, y: -20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.3, delay: 0.4 }}
+                  whileHover={{ scale: 1.05 }}
+                >
+                  <ShoppingCart className="h-5 w-5" /> {/* ShoppingCart Icon */}
+                  {getCartCount() > 0 && (
+                    <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full px-2 py-0">
+                      {getCartCount()}
+                    </span>
+                  )}
+                </motion.button>
                 <motion.button
                   onClick={() => {
                     navigate("/products");
